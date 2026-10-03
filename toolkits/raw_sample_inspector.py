@@ -2,7 +2,7 @@
 """Interactive viewer for Sample.dat (raw little-endian float64) files.
 
 Usage:
-    python3 view_samples.py [data_dir_or_file]
+    python3 raw_sample_inspector.py [data_dir_or_file]
 
 Controls:
     position slider (below the axes)  drag horizontally to scroll through the data
