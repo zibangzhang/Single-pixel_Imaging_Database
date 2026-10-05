@@ -27,6 +27,7 @@ import tkinter as tk
 from tkinter import filedialog, colorchooser, ttk
 
 import matplotlib.colors as mcolors
+from matplotlib.backend_bases import MouseEvent
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from matplotlib.widgets import Slider
@@ -91,6 +92,14 @@ class RawSampleViewer:
         self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         self.canvas.mpl_connect("key_press_event", self.on_key)
         self.canvas.mpl_connect("scroll_event", self.on_scroll)
+
+        # Tk 9 on macOS reports trackpad scrolling as <TouchpadScroll> instead
+        # of <MouseWheel>, which matplotlib does not listen for.
+        self._touchpad_acc = 0.0
+        try:
+            self.canvas.get_tk_widget().bind("<TouchpadScroll>", self._on_touchpad_scroll)
+        except tk.TclError:
+            pass                    # older Tk: <MouseWheel> already covers it
 
         # ---- Position slider (only slider) ----
         self.s_pos = Slider(
@@ -364,6 +373,21 @@ class RawSampleViewer:
             f"samples {start + 1}–{start + w} of {ds_active.data.size}"
         )
         self.canvas.draw_idle()
+
+    # ------------------------------------------------------------------
+    def _on_touchpad_scroll(self, tk_event):
+        """Turn trackpad scrolling into matplotlib scroll events (one per ~12 units)."""
+        _dx, dy = self.master.tk.call("tk::PreciseScrollDeltas", tk_event.delta)
+        self._touchpad_acc += float(dy)
+        steps = int(self._touchpad_acc / 12)
+        if steps == 0:
+            return
+        self._touchpad_acc -= steps * 12
+        x, y = self.canvas._event_mpl_coords(tk_event)
+        for _ in range(abs(steps)):
+            # macOS reports "fingers moving up" as a negative dy; swipe up = zoom in.
+            ev = MouseEvent("scroll_event", self.canvas, x, y, step=-1 if steps > 0 else 1)
+            self.canvas.callbacks.process("scroll_event", ev)
 
     # ------------------------------------------------------------------
     def on_scroll(self, e):
