@@ -61,6 +61,10 @@ The path is optional; use the **Open** button in the window to load a folder. Ev
 
 Sample indices on the horizontal axis start at 1.
 
+## Authors
+
+This project was initiated on Oct. 3rd, 2026 by Zibang Zhang, Xinyi Guo, and Yiwen Luo.
+
 ## License
 
 See [LICENSE](LICENSE).

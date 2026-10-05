@@ -1,6 +1,11 @@
 [project]
 name = "single-pixel-imaging-database"
 version = "0.1.0"
+authors = [
+    { name = "Zibang Zhang" },
+    { name = "Xinyi Guo" },
+    { name = "Yiwen Luo" },
+]
 requires-python = ">=3.12"
 dependencies = [
     "matplotlib>=3.11.2",
