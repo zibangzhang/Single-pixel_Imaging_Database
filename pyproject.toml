@@ -1,0 +1,27 @@
+[project]
+name = "single-pixel-imaging-database"
+version = "0.1.0"
+authors = [
+    { name = "Zibang Zhang" },
+    { name = "Xinyi Guo" },
+    { name = "Yiwen Luo" },
+]
+requires-python = ">=3.12"
+dependencies = [
+    "matplotlib>=3.11.2",
+    "numpy>=2.5.3",
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.6.2",
+    "ruff>=0.17.0",
+]
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+# Syntax and pyflakes only. Import sorting is left alone so matplotlib.use("TkAgg")
+# stays before the TkAgg backend imports.
+select = ["E4", "E7", "E9", "F"]
