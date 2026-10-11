@@ -454,7 +454,7 @@ class RawSampleViewer:
 def main():
     initial = Path(sys.argv[1]) if len(sys.argv) > 1 else None
     root = tk.Tk()
-    app = RawSampleViewer(root, initial_root=initial)
+    _app = RawSampleViewer(root, initial_root=initial)
     root.mainloop()
 
 
