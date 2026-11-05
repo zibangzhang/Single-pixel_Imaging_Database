@@ -61,6 +61,25 @@ The path is optional; use the **Open** button in the window to load a folder. Ev
 
 Sample indices on the horizontal axis start at 1.
 
+### Intensity extractor
+
+Builds the single-pixel intensity array from a `Sample.dat` sample array. The file is a sequence of patterns, and each pattern is `n` consecutive samples. The mean of a chosen segment of those `n` samples is one intensity, so `m` patterns become `m` intensities.
+
+```bash
+uv run toolkits/intensity_extractor.py [path/to/Sample.dat]
+```
+
+A folder path loads every `Sample.dat` underneath it. If the name contains `<n>samples`, that value is used as the initial pattern length.
+
+- **Samples per pattern**: length `n` of each pattern block.
+- **Start / End**: 1-based inclusive segment averaged inside every pattern (`data[Start - 1:End]` in NumPy).
+- **Pattern / Blocks**: which patterns are drawn in the upper plot. The orange band is the averaged segment; the red line is that pattern's intensity.
+- **Intensity position**, mouse wheel, Left / Right: scroll and zoom the intensity array. Home / End jump to its ends.
+- **Up / Down**: previous / next file.
+- **Save intensity**: write the array as little-endian `float64` (`.dat`) or a NumPy `.npy`.
+- The intensities keep the original pattern order; interleaved recordings are not reordered.
+- **Save all files**: apply the current settings to every loaded `Sample.dat` and write one array per file (named after its folder) into a chosen folder, in the format picked under **Batch format**.
+
 ## Authors
 
 This project was initiated on Oct. 3rd, 2026 by Zibang Zhang, Xinyi Guo, and Yiwen Luo.
