@@ -32,6 +32,9 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from matplotlib.widgets import Slider
 
+# The repository root (this file lives in <root>/toolkits), where the Open dialog starts.
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
 
 # Palette used to assign a distinct color to each new dataset.
 COLORS = [
@@ -173,7 +176,9 @@ class RawSampleViewer:
         Otherwise a new dataset is appended. An empty ("+") row that the user
         filled in is consumed (its pending slot is removed).
         """
-        folder = filedialog.askdirectory(title="Select the folder containing Sample.dat")
+        folder = filedialog.askdirectory(
+            title="Select the folder containing Sample.dat", initialdir=REPO_ROOT,
+        )
         if folder:
             self.add_directory(Path(folder), row_index)
 
